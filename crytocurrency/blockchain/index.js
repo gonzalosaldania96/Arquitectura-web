@@ -1,5 +1,5 @@
 const Block = require('./block');
-const cryptoHash = require('./crypto-hash');
+const cryptoHash = require('../util/crypto-hash');
 
 /**
  * @author diego
@@ -36,7 +36,7 @@ class Blockchain {
             return;
         }
 
-        if(!Blockchain.isValidChain(chiain)) {
+        if(!Blockchain.isValidChain(chain)) {
 
             console.error('The incoming chain must be valid %o', chain);
             return;
@@ -60,12 +60,15 @@ class Blockchain {
         for (let i = 1; i < chain.length; i++) {
 
             const {timestamp, lastHash, hash, data, difficulty, nonce} = chain[i];
+            const lastDifficulty = chain[i-1].difficulty;
 
             if(lastHash !== chain[i - 1].hash) return false;
 
             const currentHash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
 
             if(currentHash !== hash) return false;
+
+            if(Math.abs(lastDifficulty - difficulty > 1)) return false;
         }
         return true;
     }
