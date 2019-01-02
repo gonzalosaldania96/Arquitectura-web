@@ -11,9 +11,18 @@ describe('CryptoHash()', () => {
 
     it('generates a SHA-256 hashed output', () => {
 
-       expect(cryptoHash('diego')).toEqual('00e48a815525529ba9d33f8761a167588fe00c47bc82f515cf791c482ed99ecc');
+       expect(cryptoHash('diego')).toEqual("0dbfa8b3b69c95e47fc87f4269293d54ba12c59a9a85925c6cee136b1d8222a5");
 
     });
 
+
+    it('it produces a unique hash when the properties have changed on an input', () => {
+
+       const foo = {};
+       const originalHash = cryptoHash(foo);
+       foo.a = 'a';
+       expect(cryptoHash(foo)).not.toEqual(originalHash);
+
+    });
 
 });

@@ -7,7 +7,7 @@ const crypto = require('crypto');
  */
 const cryptoHash = (...inputs) => {
 
-    return crypto.createHash('sha256').update(inputs.sort().join(' ')).digest('hex');
+    return crypto.createHash('sha256').update(inputs.map(i => JSON.stringify(i)).sort().join(' ')).digest('hex');
 };
 
 
