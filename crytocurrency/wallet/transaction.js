@@ -1,5 +1,6 @@
 const uuid = require('uuid/v1');
 const {verifySignature} = require('../util');
+const {REWARD_INPUT, MINING_REWARD} = require('../config');
 
 /**
  * @author diego
@@ -13,11 +14,11 @@ class Transaction {
      * @param recipient
      * @param amount
      */
-    constructor({senderWallet, recipient, amount}) {
+    constructor({senderWallet, recipient, amount, outputMap, input}) {
 
         this.id = uuid();
-        this.outputMap = this.createOutputMap({senderWallet, recipient, amount});
-        this.input = this.createInput({senderWallet, outputMap: this.outputMap});
+        this.outputMap = outputMap || this.createOutputMap({senderWallet, recipient, amount});
+        this.input = input || this.createInput({senderWallet, outputMap: this.outputMap});
     }
 
 
@@ -94,6 +95,21 @@ class Transaction {
         return true;
     }
 
+
+    /**
+     * Creates a special tx for miner
+     *
+     * @param minerWallet
+     */
+    static rewardTransaction({minerWallet}) {
+
+        return new this({
+
+            input: REWARD_INPUT,
+            outputMap: {[minerWallet.publicKey]: MINING_REWARD}
+        })
+
+    }
 
 }
 

@@ -1,10 +1,12 @@
 const express = require('express');
 const request = require('request');
 const bodyParser = require('body-parser');
+const path = require('path');
 const Blockchain = require('./blockchain');
 const PubSub = require('./app/pubsub');
 const TransactionPool = require('./wallet/transaction.pool');
 const Wallet = require('./wallet');
+const TransactionMiner = require('./app/transaction-miner');
 
 /**
  * @author diego
@@ -18,10 +20,11 @@ const wallet = new Wallet();
 const pubsub = new PubSub({blockchain, transactionPool, wallet});
 const DEFAULT_PORT = 3000;
 const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`;
-
+const transactionMiner = new TransactionMiner({blockchain, transactionPool, wallet, pubsub});
 
 
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'client/dist')));
 
 
 /**
@@ -64,7 +67,7 @@ app.post('/api/transact', (req, res) => {
 
         } else {
 
-            transaction = wallet.createTransaction({recipient, amount});
+            transaction = wallet.createTransaction({recipient, amount, chain: blockchain.chain});
         }
         transactionPool.setTransaction(transaction);
         pubsub.broadcastTransaction(transaction);
@@ -87,6 +90,40 @@ app.get('/api/transaction-pool-map', (req, res) => {
 
     res.json(transactionPool.transactionMap);
 });
+
+
+/**
+ *
+ */
+app.get('/api/mine-transactions', (req, res) => {
+
+    transactionMiner.mineTransaction();
+
+    res.redirect('/api/blocks');
+});
+
+
+/**
+ *
+ */
+app.get('/api/wallet-info', (req, res) => {
+
+    res.json({
+        address: wallet.publicKey,
+        balance: Wallet.calculateBalance({chain: blockchain.chain, address: wallet.publicKey})
+    });
+
+});
+
+/**
+ *
+ */
+app.get('*', (req, res) => {
+
+   res.sendFile(path.join(__dirname, './client/dist/index.html'));
+
+});
+
 
 
 // Sync method
@@ -114,6 +151,9 @@ const syncWithRootState = () => {
         }
     });
 };
+
+
+
 
 // Start server
 

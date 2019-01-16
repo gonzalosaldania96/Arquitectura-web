@@ -28,7 +28,7 @@ class Blockchain {
      * The chain is replaced when its valid
      * @param chain
      */
-    replaceChain(chain) {
+    replaceChain(chain, onSuccess) {
 
         if(chain.length <= this.chain.length) {
 
@@ -40,6 +40,11 @@ class Blockchain {
 
             console.error('The incoming chain must be valid %o', chain);
             return;
+        }
+
+        if(onSuccess) {
+
+            onSuccess();
         }
 
         this.chain = chain;

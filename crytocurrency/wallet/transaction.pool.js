@@ -1,7 +1,10 @@
+const Transaction = require("./transaction");
+
 /**
  * @author diego
  * @since 1.0.0
  */
+
 class TransactionPool {
 
     /**
@@ -9,9 +12,35 @@ class TransactionPool {
      */
     constructor() {
 
+        this.clear();
+    }
+
+    /**
+     * Reset transaction map
+     */
+    clear() {
+
         this.transactionMap = {};
     }
 
+    /**
+     * @param chain
+     */
+    clearBlockchainTransactions({chain}) {
+
+        for(let i=1; i < chain.length; i++) {
+
+            const block = chain[i];
+
+            for(let transaction of block.data) {
+
+                if(this.transactionMap[transaction.id]) {
+
+                    delete this.transactionMap[transaction.id];
+                }
+            }
+        }
+    }
 
     /**
      * @param transaction
@@ -36,6 +65,14 @@ class TransactionPool {
      */
     setMap(rootTransactionPoolMap) {
         this.transactionMap = rootTransactionPoolMap;
+    }
+
+    /**
+     *
+     */
+    validTransactions() {
+        Object.values(this.transactionMap).filter(t => Transaction.validTransaction(t));
+
     }
 }
 
