@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js --exec babel-node",
+    "start": "nodemon src/index.js --exec babel-node --ext js,graphql ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "diego marafetti",
@@ -12,9 +12,11 @@
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "node-uuid": "^1.4.8",
     "graphql-yoga": "1.14.10"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0"
   }
 }
