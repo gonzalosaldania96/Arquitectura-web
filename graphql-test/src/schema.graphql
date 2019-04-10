@@ -29,3 +29,9 @@ type Post {
     published: Boolean!
     author: User!
 }
+
+type Subscription {
+
+    count: Int!
+
+}
