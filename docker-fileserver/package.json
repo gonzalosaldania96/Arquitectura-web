@@ -1,0 +1,17 @@
+{
+  "name": "docker-fileserver",
+  "version": "1.0.0",
+  "description": "This is webserver docker container",
+  "main": "app/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app/main.js"
+  },
+  "author": "Diego Marafetti",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.17.1",
+    "body-parser": "1.19.0",
+    "moment": "2.24.0"
+  }
+}
