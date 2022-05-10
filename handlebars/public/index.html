@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Arquitectura Web</title>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 
@@ -22,11 +22,10 @@
                 Costs: <input type="number" min="0" ng-model="cost">
             </div>
             <div>
-                <b>Total:</b> {{::total}}
+                <b>Total:</b> {{qty*cost}}
             </div>
         </div>
-
-
+        
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
         <script type="application/javascript" src="/static/js/app.js"></script>
 

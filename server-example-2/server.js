@@ -5,7 +5,7 @@ const path   = require('path');
 
 
 
-const server = http.createServer((req, res) => {
+const server = http.createServer((req , res ) => {
 
     let parsedUrl    = url.parse(req.url, true);
     let resourcePath = parsedUrl.pathname;
@@ -78,6 +78,14 @@ const server = http.createServer((req, res) => {
 
     if(resultApi) {
 
+        // POST
+
+        // DELETE
+
+        // PUT
+
+        // PATCH
+
         let clients = [
 
             {id: 1, name: 'Diego Sebastian'},
@@ -85,6 +93,7 @@ const server = http.createServer((req, res) => {
             {id: 3, name: 'Jesus Capineri'},
             {id: 4, name: 'Renato Gulli'}
         ];
+
 
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -110,3 +119,9 @@ server.listen(process.env.PORT || 3000,  () => {
     console.log('Server started...');
 
 });
+
+
+
+
+
+

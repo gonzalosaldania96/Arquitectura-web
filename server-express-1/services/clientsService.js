@@ -19,7 +19,7 @@ function ClientsService() {
  */
 ClientsService.prototype.getAll = function() {
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
 
         resolve(this._clients);
     });
@@ -56,7 +56,17 @@ ClientsService.prototype.getById = function(id) {
  */
 ClientsService.prototype.add = function(client) {
 
-    this._clients.push(client);
+    return new Promise(resolve => {
+
+        this._clients.push(client);
+
+        setTimeout(() => {
+
+            resolve(client);
+
+        }, 100);
+
+    });
 };
 
 

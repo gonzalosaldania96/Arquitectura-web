@@ -15,6 +15,7 @@
   "dependencies": {
     "express": "^4.16.3",
     "body-parser": "^1.18.2",
-    "moment": "^2.22.1"
+    "moment": "^2.22.1",
+    "co-express": "^2.0.0"
   }
 }

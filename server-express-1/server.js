@@ -1,15 +1,22 @@
 const express    = require('express');
 const bodyParser = require('body-parser');
 const moment     = require('moment');
+const wrap       = require('co-express');
 const clientsService = require('./services/clientsService');
 
 const app = express();
 
 
 
+
 // parse body as json
 
 app.use(bodyParser.json());
+
+
+
+
+
 
 
 // all requests
@@ -20,7 +27,12 @@ app.use((req, res, next) => {
 
     next();
 
+
 });
+
+
+
+
 
 
 
@@ -38,6 +50,8 @@ app.get('/', async (req, res) => {
 
     });
 
+
+
     res.send(
         `<html>
             <head>
@@ -50,11 +64,12 @@ app.get('/', async (req, res) => {
             </body>
         </html>`
     );
+
+
 });
 
 
 
-// api
 
 
 app.get('/api/clients', async (req, res) => {
@@ -63,22 +78,29 @@ app.get('/api/clients', async (req, res) => {
 
     res.json(clients);
 
+
+
+    // res. content-type = application/json
+    // res.write(JSON.stringify(clients))
+    // res.end();
+
 });
 
 
 
 // get clients by id
 
-app.get('/api/clients/:id', async (req, res) => {
+app.get('/api/clients/:idCliente', async (req, res) => {
 
     try {
 
-        let cli = await clientsService.getById(req.params.id);
+        let cli = await clientsService.getById(req.params.idCliente);
 
         res.json(cli);
 
     } catch(ex) {
 
+        console.log(ex);
         res.status(404).end();
 
     }
@@ -87,14 +109,19 @@ app.get('/api/clients/:id', async (req, res) => {
 
 
 // add new client - Content Type: json
+// Testing generator functions (co-express)
 
-app.post('/api/clients', (req, res) => {
+app.post('/api/clients', wrap(function* (req, res) {
 
-    clientsService.add(req.body);
+    let newClient = yield clientsService.add(req.body); // => req.body = {nombre, edad}
 
-    res.status(201).send(req.body);
+    res.statusMessage = "CLIENTE CREADO";
+    res.status(201).send(newClient);
 
-});
+    var el = element.append(createElement('div'))
+
+
+}));
 
 
 
@@ -107,12 +134,12 @@ app.delete('/api/clients/:id', (req, res) => {
 
 
 
+
+
 // start server
 
 app.listen(process.env.PORT || 3000, function () {
 
-    console.log('API andando con express...');
+    console.log('API y express.js...');
 
 });
-
-
