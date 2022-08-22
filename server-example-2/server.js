@@ -71,6 +71,36 @@ const server = http.createServer((req , res ) => {
     }
 
 
+    // atiendo css
+
+    let resultCss = /^\/css\/(.+)$/.exec(resourcePath);
+
+    if(resultCss) {
+
+        fs.readFile(path.resolve(__dirname, `css/${resultCss[1]}`), (err, data) => {
+
+            if(err) {
+
+                res.statusCode = 404;
+                res.end();
+
+            } else {
+
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/css');
+                res.write(data);
+                res.end();
+
+            }
+
+
+        });
+
+        return;
+    }
+
+
+
 
     // api
 
