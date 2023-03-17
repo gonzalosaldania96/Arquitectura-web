@@ -14,9 +14,8 @@ fs.readFile("./readme.txt", function(err, data) {
         return;
     }
 
-    for (i=1, i<10000000){}
-
     // 3
+
     console.log(data);
 
 });
