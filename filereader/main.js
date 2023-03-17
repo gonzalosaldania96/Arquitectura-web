@@ -2,15 +2,7 @@ const fs = require("fs", "utf8");
 
 // REQUEST IO: ............ssss
 //1
-// 2
-// 4
-//5
-// 3
-// 8
-
-
-
-
+//2
 fs.readFile("./readme.txt", function(err, data) {
 
     if(err) {
