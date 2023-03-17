@@ -11,7 +11,7 @@ const app = express();
 
 // parse body as json
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 
 
@@ -117,9 +117,6 @@ app.post('/api/clients', wrap(function* (req, res) {
 
     res.statusMessage = "CLIENTE CREADO";
     res.status(201).send(newClient);
-
-    var el = element.append(createElement('div'))
-
 
 }));
 
