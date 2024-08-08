@@ -2,20 +2,17 @@ const express    = require('express');
 const bodyParser = require('body-parser');
 const moment     = require('moment');
 const wrap       = require('co-express');
-const clientsService = require('./services/clientsService');
+const {service, Client} = require('./services/clientsService');
+
+
+// create express server
 
 const app = express();
-
-
 
 
 // parse body as json
 
 app.use(express.json());
-
-
-
-
 
 
 
@@ -33,14 +30,12 @@ app.use((req, res, next) => {
 
 
 
-
-
-
 // get home
 
 app.get('/', async (req, res) => {
 
-    let clients = await clientsService.getAll();
+
+    let clients = await service.getAll();
 
     let list = [];
 
@@ -74,11 +69,9 @@ app.get('/', async (req, res) => {
 
 app.get('/api/clients', async (req, res) => {
 
-    let clients = await clientsService.getAll();
+    let clients = await service.getAll();
 
     res.json(clients);
-
-
 
     // res. content-type = application/json
     // res.write(JSON.stringify(clients))
@@ -90,17 +83,19 @@ app.get('/api/clients', async (req, res) => {
 
 // get clients by id
 
+
 app.get('/api/clients/:idCliente', async (req, res) => {
 
     try {
 
-        let cli = await clientsService.getById(req.params.idCliente);
+        let cli = await service.getById(req.params.idCliente); // 1234
 
         res.json(cli);
 
     } catch(ex) {
 
         console.log(ex);
+
         res.status(404).end();
 
     }
@@ -109,22 +104,22 @@ app.get('/api/clients/:idCliente', async (req, res) => {
 
 
 // add new client - Content Type: json
-// Testing generator functions (co-express)
 
-app.post('/api/clients', wrap(function* (req, res) {
+app.post('/api/clients', async (req, res) => {
 
-    let newClient = yield clientsService.add(req.body); // => req.body = {nombre, edad}
+    let newClient = await service.add(req.body); // => req.body = {nombre, edad}
 
     res.statusMessage = "CLIENTE CREADO";
+
     res.status(201).send(newClient);
 
-}));
+});
 
 
 
 app.delete('/api/clients/:id', (req, res) => {
 
-    clientsService.deleteById(req.params.id);
+    service.deleteById(req.params.id);
 
     res.status(204).end();
 });

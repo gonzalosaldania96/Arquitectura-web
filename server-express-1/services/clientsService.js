@@ -1,84 +1,160 @@
-
-function ClientsService() {
-
-    console.log('Init user service');
-
-    this._clients = [
-
-        {id: 1, nombre: 'Diego', edad:20 },
-        {id: 2, nombre: 'Agustin', edad: 22 },
-        {id: 3, nombre: 'Alvaro', edad:24 }
-
-    ];
-
-};
+const database = require('../db/client')
+const {id, id} = require("../../example-modules/modules/module-2");
 
 
-/**
- * @return {Promise<any>}
- */
-ClientsService.prototype.getAll = function() {
+class Client {
 
-    return new Promise(resolve => {
+    /**
+     * @type {number}
+     */
+    #id;
 
-        resolve(this._clients);
-    });
+    /**
+     * @type {string}
+     */
+    #nombre;
 
-};
+    /**
+     * @type {number}
+     */
+    #edad;
 
+    /**
+     * @param id {number}
+     * @param nombre {string}
+     * @param edad {number}
+     */
+    constructor({id, nombre, edad}) {
 
-/**
- * @param id
- * @return {Promise<any>}
- */
-ClientsService.prototype.getById = function(id) {
+        this.#id = id;
+        this.#edad = edad;
+        this.#nombre = nombre;
+    }
 
-    return new Promise((resolve, reject) => {
+    get id() {
 
-        let client = this._clients.find(c => c.id == id);
+        return this.#id;
+    }
 
-        if(client) {
+    set id(value) {
 
-            resolve(client);
+        this.#id = value;
+    }
 
-        } else {
+    get nombre() {
 
-            reject(id);
-        }
+        return this.#nombre;
+    }
 
-    });
+    set nombre(value) {
 
-};
+        this.#nombre = value;
+    }
 
+    get edad() {
 
-/**
- * @param client
- */
-ClientsService.prototype.add = function(client) {
+        return this.#edad;
+    }
 
-    return new Promise(resolve => {
+    set edad(value) {
 
-        this._clients.push(client);
+        this.#edad = value;
+    }
 
-        setTimeout(() => {
-
-            resolve(client);
-
-        }, 100);
-
-    });
-};
-
-
-/**
- * @param id
- */
-ClientsService.prototype.deleteById = function(id) {
-
-    this._clients = this._clients.filter(c => c.id != req.params.id);
-};
+}
 
 
-module.exports = new ClientsService();
+class ClientService {
+
+    /**
+     * @type {Client[]}
+     */
+    #clients = [];
+
+    constructor() {
+
+        this.#clients = [
+
+            new Client({id: 1, nombre: 'Diego', edad:20 }),
+            new Client({id: 2, nombre: 'Agustin', edad: 22 }),
+            new Client({id: 3, nombre: 'Alvaro', edad:24 })
+
+         ];
+
+    }
+
+    /**
+     * Get all clients
+     *
+     * @return {Promise<Client[]>}
+     */
+    getAll() {
+
+        return new Promise(resolve => {
+
+            resolve(this.#clients);
+        });
+
+    }
+
+
+    /**
+     * Get client by id
+     * @param id {string}
+     * @return {Promise<Client>}
+     */
+    getById(id) {
+
+        return new Promise((resolve, reject) => {
+
+            let client = this.#clients.find(c => c.id === id);
+
+            if(client) {
+
+                resolve(client);
+
+            } else {
+
+                reject(id);
+            }
+
+        });
+
+    }
+
+    /**
+     * @param client {Client}
+     * @return {Promise<Client>}
+     */
+    add(client) {
+
+        return new Promise(resolve => {
+
+            this.#clients.push(client);
+
+            setTimeout(() => {
+
+                resolve(client);
+
+            }, 100);
+
+        });
+
+    }
+
+    /**
+     * @param id {number}
+     */
+    deleteById(id) {
+
+        this.#clients = this.#clients.filter(c => c.id !== req.params.id);
+    }
+
+
+}
+
+
+module.exports = {Client, service: new ClientService()};
+
 
 
