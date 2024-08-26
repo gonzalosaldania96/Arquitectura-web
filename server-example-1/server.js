@@ -2,7 +2,6 @@ const http   = require('http');
 const url    = require('url');
 const moment = require('moment');
 
-
 const server = http.createServer(function(req, res) {
 
 
@@ -13,10 +12,6 @@ const server = http.createServer(function(req, res) {
     console.log('LIMIT: ' + params.query.limit);
 
     // aca
-
-
-
-
     req.on('data', (chunk) => {
 
         console.log("-----------------");
@@ -38,10 +33,7 @@ const server = http.createServer(function(req, res) {
         res.setHeader('Content-Type', 'text/html');
         res.end('Hello World!\n' + moment().format('MMMM Do YYYY, h:mm:ss a'));
 
-
-
     });
-
 
 
 });
